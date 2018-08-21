@@ -1,0 +1,9 @@
+extends _layout.pug
+block content
+  .container
+    include _header.pug
+    main
+      .error
+        p Oops! We can't find the page you requested, sorry...
+        p You can start over again at the #[a(href='/') documentation page].
+  include _footer.pug
