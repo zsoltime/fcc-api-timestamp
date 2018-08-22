@@ -1,7 +1,53 @@
 extends _layout.pug
 block content
-  .container
-    include _header.pug
-    main
-      p Documentation will be available on this page
+  include _header.pug
+
+  main.wrapper.wrapper--no-bottom
+    section#intro
+      p Timestamp microservice is a small API built for #[a(href='https://learn.freecodecamp.org/apis-and-microservices/apis-and-microservices-projects/timestamp-microservice', target='_blank') freeCodeCamp]. It takes a human readable date string or a unix timestamp and returns a JSON object with the unix timestamp and the UTC date.
+
+    section#user-stories
+      h3 User Stories
+      blockquote
+        ul.stories
+          li.stories__item <input class="stories__checkbox" type="checkbox" checked disabled> The API endpoint is <code>GET [project_url]/api/timestamp/:date_string?</code>
+          li.stories__item <input class="stories__checkbox" type="checkbox" checked disabled> A date string is valid if can be successfully parsed by <code>new Date(date_string)</code>. Note that the unix timestamp needs to be an integer (not a string) specifying milliseconds. In our test we will use date strings compliant with ISO-8601 (e.g. <code>"2016-11-20"</code>) because this will ensure a UTC timestamp.
+          li.stories__item <input class="stories__checkbox" type="checkbox" checked disabled> If the date string is empty it should be equivalent to trigger <code>new Date()</code>, i.e. the service uses the current timestamp.
+          li.stories__item <input class="stories__checkbox" type="checkbox" checked disabled> If the date string is valid the API returns a JSON having the structure <code>{ "unix": &lt;date.getTime()&gt;, "utc": &lt;date.toUTCString()&gt; }</code> e.g. <code>{ "unix": 1479663089000, "utc": "Sun, 20 Nov 2016 17:31:29 GMT" }</code>
+          li.stories__item <input class="stories__checkbox" type="checkbox" checked disabled> If the date string is invalid the API returns a JSON having the structure <code>{ "error": "Invalid Date" }</code>
+
+    section#usage
+      h3 Example Usage
+      p You can use the <code>/api/timestamp/%%date%%</code> endpoint where <code>%%date%%</code> is any human readable date that can be parsed by JavaScript's <code>new Date()</code> or a unix timestamp (in milliseconds).
+      .row
+        .col
+          h4 Example input
+          - var examples = [ 'Aug%2022,%202018', '08%2022,%202018', '08-22-2018', '2018 8 22', '1534896000000' ];
+          each item in examples
+            pre
+              code.example__code= 'https://zsolti.me/api/timestamp/' + item
+        .col
+          h4 Example output
+          pre
+            code.example__code
+              | {
+              |   "unix": 1534896000000,
+              |   "utc": "Wed, 22 Aug 2018 00:00:00 GMT"
+              | }
+
+    section#live
+      h3 Try It Live
+      p You can even try it live below. Just start typing in the field below and see the API response instantly.
+      form.form.row
+        .col
+          input.form__field#input(type='search', placeholder='Start typing...')
+        .col
+          textarea.form__field#output(placeholder='Result will be displayed here...', rows=4, disabled)
+
+    section#notes
+      p The example above uses the #[a(href='https://developer.mozilla.org/en/docs/Web/API/Fetch_API', target='_blank') fetch() API] to get the results via AJAX requests. It works in Chrome 42+, FireFox 39+, Safari 10+, Opera 29+, and Edge 14+ only; IE is not supported.
+      p The live preview won't work for you in Internet Explorer or really old browsers; however, you can still try the API directly.
+      p The GitHub repo is available here: #[a(href='https://github.com/zsoltime/fcc-api-timestamp') Timestamp Microservice]
+
   include _footer.pug
+  script(src='app.js')
